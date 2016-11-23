@@ -14,7 +14,7 @@ public class Main {
     private static final Long FIVE_MIN_IN_MILLISECONDS =  30 * 1000L;
 
     public static void main(String[] args) throws Exception {
-        Config.init("/Users/davidiamyou/Downloads/A6/a6.config");
+        Config.init("../a6.config");
         a6();
     }
 

@@ -20,3 +20,11 @@
 Q1 (ASK Mel what is a buffer, point 2 last point)
 Q2. We can make assumption the user can provide any input as long as all of the physical units in float and time in int.
 Q3. Ask Mel to clarify what he has in mind as an API.
+
+## Running the project
+
+```bash
+git clone https://github.com/davidiamyou/17630-A6.git
+cd 17630-A6
+./buildAndRun.sh
+```
