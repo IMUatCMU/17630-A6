@@ -61,8 +61,14 @@ public class Config {
                     case KEY_SCHEMA:
                         LinkedList list = new LinkedList();
                         Arrays.stream(kv[1].split(";")).forEach(s1 -> {
-                            String[] namesAndTypes = s1.split(":");
-                            list.add(new Schema(namesAndTypes[0], namesAndTypes[1]), list.getSize());
+                            String[] namesTypesAndUnits = s1.split(":");
+                            if (namesTypesAndUnits.length == 2) {
+                                list.add(new Schema(namesTypesAndUnits[0], namesTypesAndUnits[1], null), list.getSize());
+                            } else if (namesTypesAndUnits.length == 3) {
+                                list.add(new Schema(namesTypesAndUnits[0], namesTypesAndUnits[1], namesTypesAndUnits[2]), list.getSize());
+                            } else {
+                                throw new RuntimeException("Illegal schema format: " + s1);
+                            }
                         });
                         localSource.put(KEY_SCHEMA, list);
                         break;
@@ -139,10 +145,12 @@ public class Config {
 
         private final String name;
         private final String type;
+        private final String unit;
 
-        public Schema(String name, String type) {
+        public Schema(String name, String type, String unit) {
             this.name = name;
             this.type = type;
+            this.unit = unit;
 
             switch (this.type) {
                 case TYPE_INT:
@@ -162,6 +170,10 @@ public class Config {
 
         public String getType() {
             return type;
+        }
+
+        public String getUnit() {
+            return unit;
         }
     }
 }

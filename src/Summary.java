@@ -72,7 +72,13 @@ public class Summary implements Renderable {
             case KEY_SCHEMA:
                 LinkedList list = new LinkedList();
                 Arrays.stream(kv[1].split(";")).forEach(s -> {
-                    Config.Schema schema = new Config.Schema(s.split(":")[0], s.split(":")[1]);
+                    String[] split = s.split(":");
+                    Config.Schema schema = null;
+                    if (split.length == 2) {
+                        schema = new Config.Schema(split[0], split[1], null);
+                    } else if (split.length == 3) {
+                        schema = new Config.Schema(split[0], split[1], split[2]);
+                    }
                     list.add(schema, list.getSize());
                 });
                 this.setSchema(list);
@@ -134,7 +140,11 @@ public class Summary implements Renderable {
         Stream.Builder<String> schemaSB = Stream.builder();
         this.schema.forEach(o -> {
             Config.Schema schema = (Config.Schema) o;
-            schemaSB.add(schema.getName() + ":" + schema.getType());
+            if (schema.getUnit() != null && schema.getUnit().length() > 0) {
+                schemaSB.add(schema.getName() + ":" + schema.getType() + ":" + schema.getUnit());
+            } else {
+                schemaSB.add(schema.getName() + ":" + schema.getType());
+            }
         });
 
         StringBuilder sb = new StringBuilder();
@@ -171,7 +181,11 @@ public class Summary implements Renderable {
         Stream.Builder<String> schemaSB = Stream.builder();
         this.schema.forEach(o -> {
             Config.Schema schema = (Config.Schema) o;
-            schemaSB.add(schema.getName() + " (" + schema.getType() + ")");
+            if (schema.getUnit() != null && schema.getUnit().length() > 0) {
+                schemaSB.add(schema.getName() + " (" + schema.getType() + ") - " + schema.getUnit());
+            } else {
+                schemaSB.add(schema.getName() + " (" + schema.getType() + ")");
+            }
         });
 
         StringBuilder sb = new StringBuilder();
