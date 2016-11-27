@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -32,24 +33,31 @@ public class Cli {
         System.out.println("3. Read Data");
         System.out.println();
         System.out.print("Action: ");
-        Scanner reader = new Scanner(System.in);  // Reading from System.in
-        int n = reader.nextInt(); // Scans the next token of the input as an int.
+        try {
+            Scanner reader = new Scanner(System.in);  // Reading from System.in
+            int n = reader.nextInt(); // Scans the next token of the input as an int.
 
-        // Ensure input is either 1, 2, or 3.
-        switch(n) {
+            // Ensure input is either 1, 2, or 3.
+            switch(n) {
             case 1:
-            getSummaryData();
-            break;
+                getSummaryData();
+                break;
             case 2:
-            searchData();
-            break;
+                searchData();
+                break;
             case 3:
-            readData();
-            break;
+                readData();
+                break;
             default:
+                System.out.println("Invalid input");
+                break;
+            }
+        } catch (InputMismatchException ex) {
             System.out.println("Invalid input");
-            break;
         }
+
+        // start the program again.
+        start();
     }
 
     /**
@@ -57,69 +65,65 @@ public class Cli {
      */
     private void getSummaryData() {
         System.out.println(Api.defaultApi().getSummary().render());
-
-        // start the program again
-        start();
     }
 
     /**
      * The command-line interface for searching data
      */
     private void searchData() {
-        System.out.print("Field name: ");
-        Scanner reader = new Scanner(System.in);
-        String fieldName = reader.nextLine();
-
-        System.out.print("value: ");
-        String value = reader.nextLine();
-
-        // Continue searching for the next instance until there are no more.
         try {
+            System.out.print("Field name: ");
+            Scanner reader = new Scanner(System.in);
+            String fieldName = reader.nextLine();
+
+            System.out.print("value: ");
+            String value = reader.nextLine();
+
+            // Continue searching for the next instance until there are no more.
             while (true) {
                 System.out.println(Api.defaultApi().search(fieldName, value).render());
                 System.out.println("Press [Enter] to continue");
                 reader.nextLine();
             }
-        } catch (Exception ex) {
+        } catch (InputMismatchException ex) {
+            System.out.println("Invalid input.");
+        } catch (Api.NoMoreDataException ex) {
             System.out.println("End of data points.");
         }
-
-        // start the program again
-        start();
     }
 
     /**
      * The command-line interface for reading data
      */
     private void readData() {
-        Scanner reader = new Scanner(System.in);
-
-        System.out.print("Start time hour: ");
-        int startHour = reader.nextInt();
-
-        System.out.print("Minute: ");
-        int startMinute = reader.nextInt();
-
-        System.out.print("Second: ");
-        float startSecond = reader.nextFloat();
-
-        System.out.print("End time hour: ");
-        int endHour = reader.nextInt();
-
-        System.out.print("Minute: ");
-        int endMinute = reader.nextInt();
-
-        System.out.print("Second: ");
-        float endSecond = reader.nextFloat();
-        reader.nextLine(); // Consume the \n in \r\n so it doesn't skip the next nextLine() call.
-
-        System.out.print("Measurements: ");
-        String measurementsString = reader.nextLine();
-
-        String[] measurements = measurementsString.split(",");
-
-        // Read and display a page of data until there are no more data points.
         try {
+            Scanner reader = new Scanner(System.in);
+
+            System.out.print("Start time hour: ");
+            int startHour = reader.nextInt();
+
+            System.out.print("Minute: ");
+            int startMinute = reader.nextInt();
+
+            System.out.print("Second: ");
+            float startSecond = reader.nextFloat();
+
+            System.out.print("End time hour: ");
+            int endHour = reader.nextInt();
+
+            System.out.print("Minute: ");
+            int endMinute = reader.nextInt();
+
+            System.out.print("Second: ");
+            float endSecond = reader.nextFloat();
+            reader.nextLine(); // Consume the \n in \r\n so it doesn't skip the next nextLine() call.
+
+            System.out.print("Measurements: ");
+            String measurementsString = reader.nextLine();
+
+            String[] measurements = measurementsString.split(",");
+
+            // Read and display a page of data until there are no more data points.
             while (true) {
                 System.out.println(Api.defaultApi().read(
                         TimeIndex.of(startHour, startMinute, startSecond),
@@ -129,11 +133,10 @@ public class Cli {
                 System.out.println("Press [Enter] to continue");
                 reader.nextLine();
             }
-        } catch (Exception ex) {
+        } catch (InputMismatchException ex) {
+            System.out.println("Invalid input.");
+        } catch (Api.NoMoreDataException ex) {
             System.out.println("End of data points.");
         }
-
-        // start the program again
-        start();
     }
 }
