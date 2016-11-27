@@ -14,9 +14,6 @@ public class DataCollector {
     // start command to be issued to the server
     private static final String START_COMMAND = "start\n";
 
-    // TODO change it back to 5 minutes, it is now 30 seconds
-    private static final Long FIVE_MIN_IN_MILLISECONDS =  30 * 1000L;
-
     // the singleton instance
     private static DataCollector instance;
 
@@ -31,7 +28,7 @@ public class DataCollector {
         return instance;
     }
 
-    public void collectData() throws Exception {
+    public void collectData(Long dataRecordTime) throws Exception {
         Socket socket = new Socket("localhost", Config.getInstance().getPort());
         DataInputStream in = new DataInputStream(socket.getInputStream());
         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
@@ -80,7 +77,7 @@ public class DataCollector {
             if (null == firstMeasurement) {
                 firstMeasurement = newMeasurement;
                 hash.setStartMillisecond(firstMeasurement.getTimeInMilliseconds());
-                hash.setEndMillisecond(firstMeasurement.getTimeInMilliseconds() + FIVE_MIN_IN_MILLISECONDS);
+                hash.setEndMillisecond(firstMeasurement.getTimeInMilliseconds() + dataRecordTime);
                 summary.setStartTimestamp(firstMeasurement.getTimeInMilliseconds());
             }
 

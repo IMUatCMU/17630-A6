@@ -1,4 +1,8 @@
 public class Main {
+
+    // Five minute data record time
+    private static final Long RECORD_TIME_IN_MILLISECONDS =  5 * 30 * 1000L;
+
     /**
      * Entry point of the program
      *
@@ -14,7 +18,7 @@ public class Main {
         }
 
         // Call server to collect data, collect summary stats and write to disk
-        DataCollector.getInstance().collectData();
+        DataCollector.getInstance().collectData(RECORD_TIME_IN_MILLISECONDS);
 
         // Boot up the API for user query.
         Cli.getInstance().start();
