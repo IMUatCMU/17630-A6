@@ -66,7 +66,6 @@ public class Cli {
      * The command-line interface for searching data
      */
     private void searchData() {
-        // TODO: Print possible field names. Validate field name input
         System.out.print("Field name: ");
         Scanner reader = new Scanner(System.in);
         String fieldName = reader.nextLine();
