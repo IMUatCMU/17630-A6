@@ -25,7 +25,7 @@ public class Cli {
      * Start the Command-Line interface to the APIs.
      */
     public void start() {
-        System.out.println("Select an option:");
+        System.out.println("Select an option (press Ctrl-C to quit):");
         System.out.println();
         System.out.println("1. Get Summary Data");
         System.out.println("2. Search Data");
@@ -54,6 +54,9 @@ public class Cli {
 
     private void getSummaryData() {
         System.out.println(Api.defaultApi().getSummary().render());
+
+        // start the program again
+        start();
     }
 
     private void searchData() {
@@ -74,6 +77,9 @@ public class Cli {
         } catch (Exception ex) {
             System.out.println("End of data points.");
         }
+
+        // start the program again
+        start();
     }
 
     private static void readData() {
@@ -116,5 +122,8 @@ public class Cli {
         } catch (Exception ex) {
             System.out.println("End of data points.");
         }
+
+        // start the program again
+        start();
     }
 }
