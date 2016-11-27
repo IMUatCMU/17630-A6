@@ -52,6 +52,9 @@ public class Cli {
         }
     }
 
+    /**
+     * The command-line interface for getting summary data
+     */
     private void getSummaryData() {
         System.out.println(Api.defaultApi().getSummary().render());
 
@@ -59,6 +62,9 @@ public class Cli {
         start();
     }
 
+    /**
+     * The command-line interface for searching data
+     */
     private void searchData() {
         // TODO: Print possible field names. Validate field name input
         System.out.print("Field name: ");
@@ -68,6 +74,7 @@ public class Cli {
         System.out.print("value: ");
         String value = reader.nextLine();
 
+        // Continue searching for the next instance until there are no more.
         try {
             while (true) {
                 System.out.println(Api.defaultApi().search(fieldName, value).render());
@@ -82,7 +89,10 @@ public class Cli {
         start();
     }
 
-    private static void readData() {
+    /**
+     * The command-line interface for reading data
+     */
+    private void readData() {
         Scanner reader = new Scanner(System.in);
 
         System.out.print("Start time hour: ");
@@ -109,6 +119,7 @@ public class Cli {
 
         String[] measurements = measurementsString.split(",");
 
+        // Read and display a page of data until there are no more data points.
         try {
             while (true) {
                 System.out.println(Api.defaultApi().read(
