@@ -46,6 +46,7 @@ public class DataCollector {
         summary.setSchema(Config.getInstance().getSchema());
         Hash hash = Hash.getInstance();
 
+        System.out.println("Start receiving data...");
         // Loop for reading data from server
         while (true) {
 
@@ -87,6 +88,9 @@ public class DataCollector {
                 break;
             }
 
+            // Print out data on console
+            System.out.println(newMeasurement.toString());
+
             // Update end time stamp
             summary.setEndTimestamp(newMeasurement.getTimeInMilliseconds());
 
@@ -101,6 +105,7 @@ public class DataCollector {
 
         // Bye to the server
         socket.close();
+        System.out.println("Finished receiving data.");
 
         // Write summary file
         DataWriter.getInstance().writeToSummary(summary.toString());

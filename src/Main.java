@@ -1,7 +1,7 @@
 public class Main {
 
     // Five minute data record time
-    private static final Long RECORD_TIME_IN_MILLISECONDS =  5 * 30 * 1000L;
+    private static final Long RECORD_TIME_IN_MILLISECONDS =  5 * 60 * 1000L;
 
     /**
      * Entry point of the program
