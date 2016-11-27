@@ -114,8 +114,6 @@ public class DefaultApi implements Api {
         startTime = new TimeIndex(Math.max(startTime.getTimeInMilliseconds(), Hash.getInstance().getStartMillisecond()));
         endTime = new TimeIndex(Math.min(endTime.getTimeInMilliseconds(), Hash.getInstance().getEndMillisecond()));
 
-        // TODO sanitize fields
-
         // Call inner method to perform the real read function.
         return this.readInner(startTime, endTime, fields);
     }

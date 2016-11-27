@@ -93,9 +93,6 @@ public class DataCollector {
             // Update end time stamp
             summary.setEndTimestamp(newMeasurement.getTimeInMilliseconds());
 
-            // TODO remove this printing line
-            System.out.println(newMeasurement.toString());
-
             // Write the measurement to the appropriate bucket
             long bucketIndex = hash.getBucketIndex(newMeasurement.getTimeInMilliseconds());
             try {

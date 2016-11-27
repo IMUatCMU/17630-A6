@@ -25,7 +25,7 @@ public class Cli {
      * Start the Command-Line interface to the APIs.
      */
     public void start() {
-        System.out.println("Select an option:");
+        System.out.println("Select an option (press Ctrl-C to quit):");
         System.out.println();
         System.out.println("1. Get Summary Data");
         System.out.println("2. Search Data");
@@ -52,12 +52,20 @@ public class Cli {
         }
     }
 
+    /**
+     * The command-line interface for getting summary data
+     */
     private void getSummaryData() {
         System.out.println(Api.defaultApi().getSummary().render());
+
+        // start the program again
+        start();
     }
 
+    /**
+     * The command-line interface for searching data
+     */
     private void searchData() {
-        // TODO: Print possible field names. Validate field name input
         System.out.print("Field name: ");
         Scanner reader = new Scanner(System.in);
         String fieldName = reader.nextLine();
@@ -65,6 +73,7 @@ public class Cli {
         System.out.print("value: ");
         String value = reader.nextLine();
 
+        // Continue searching for the next instance until there are no more.
         try {
             while (true) {
                 System.out.println(Api.defaultApi().search(fieldName, value).render());
@@ -74,9 +83,15 @@ public class Cli {
         } catch (Exception ex) {
             System.out.println("End of data points.");
         }
+
+        // start the program again
+        start();
     }
 
-    private static void readData() {
+    /**
+     * The command-line interface for reading data
+     */
+    private void readData() {
         Scanner reader = new Scanner(System.in);
 
         System.out.print("Start time hour: ");
@@ -103,6 +118,7 @@ public class Cli {
 
         String[] measurements = measurementsString.split(",");
 
+        // Read and display a page of data until there are no more data points.
         try {
             while (true) {
                 System.out.println(Api.defaultApi().read(
@@ -116,5 +132,8 @@ public class Cli {
         } catch (Exception ex) {
             System.out.println("End of data points.");
         }
+
+        // start the program again
+        start();
     }
 }
