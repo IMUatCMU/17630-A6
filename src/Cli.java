@@ -119,7 +119,7 @@ public class Cli {
             float endSecond = reader.nextFloat();
             reader.nextLine(); // Consume the \n in \r\n so it doesn't skip the next nextLine() call.
 
-            System.out.print("Measurements: ");
+            System.out.print("Measurements (comma separated, no spaces): ");
             String measurementsString = reader.nextLine();
 
             String[] measurements = measurementsString.split(",");
