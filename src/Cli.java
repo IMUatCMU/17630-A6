@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -123,20 +124,49 @@ public class Cli {
 
             String[] measurements = measurementsString.split(",");
 
-            // Read and display a page of data until there are no more data points.
-            while (true) {
-                System.out.println(Api.defaultApi().read(
-                        TimeIndex.of(startHour, startMinute, startSecond),
-                        TimeIndex.of(endHour,endMinute,endSecond),
-                        measurements
-                ).render());
-                System.out.println("Press [Enter] to continue");
-                reader.nextLine();
+            LinkedList schema = Config.getInstance().getSchema();
+
+            // Get array of valid schema names
+            int numberOfSchemaValues = schema.getSize();
+            String[] validValues = new String[numberOfSchemaValues];
+            for (int i = 0; i < numberOfSchemaValues; i++) {
+                Config.Schema schemaValue = (Config.Schema) schema.get(i);
+                validValues[i] = schemaValue.getName();
+            }
+
+            // Make sure at least one measurement given was valid.
+            boolean atLeastOneMeasurementIsValid = Arrays.stream(measurements)
+            .anyMatch(data -> contains(validValues, data));
+
+            if (atLeastOneMeasurementIsValid) {
+                // Read and display a page of data until there are no more data points.
+                while (true) {
+                    System.out.println(Api.defaultApi().read(
+                            TimeIndex.of(startHour, startMinute, startSecond),
+                            TimeIndex.of(endHour,endMinute,endSecond),
+                            measurements
+                    ).render());
+                    System.out.println("Press [Enter] to continue");
+                    reader.nextLine();
+                }
+            } else {
+                System.out.println("No valid measurements given.");
             }
         } catch (InputMismatchException ex) {
             System.out.println("Invalid input.");
         } catch (Api.NoMoreDataException ex) {
             System.out.println("End of data points.");
         }
+    }
+
+    /**
+     * Method to check if a string is in a string array.
+     */
+    private static boolean contains(String[] strArray, String searchValue) {
+        for(String s: strArray) {
+            if(s.equals(searchValue))
+                return true;
+        }
+        return false;
     }
 }
